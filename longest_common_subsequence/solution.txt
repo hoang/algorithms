@@ -17,6 +17,6 @@ solution for this challenge step by step:
 					- in this case, only n with index 5 or 7 is valid to be previous item of 6 or 8, so the pick for (n+1) is (6, 8)
 				- we continue check for indexs of (n+2) to see if anything is match with previous item index of 6 or 8. For example if indexs of (n+2) is (14, 16), it won't be any valid match for (n+1)
 					- so, the sequence start from n is break at (n+1). We found a child sequence is (n, n+1)
-				- start from (n+2): we start a new possible subsequence. So we repeat steps as it is with n.
+				- start from (n+1): we start a new possible subsequence. So we repeat steps as it is with n.
 
 That's it!

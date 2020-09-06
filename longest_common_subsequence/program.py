@@ -2,6 +2,8 @@ import unittest
 
 def lcs(sequence1, sequence2):
 	map1 = dict()
+	
+	# iterate sequence1
 	for index, item in enumerate(sequence1):
 		if item not in map1:
 			map1[item] = set()		
@@ -10,43 +12,59 @@ def lcs(sequence1, sequence2):
 	result = []
 	tmp = []
 	tmp_prev_indexs = None
-	for index, item in enumerate(sequence2):
-		if item not in map1:
+	pointer_index = 0	
+
+	# iterate sequence2 by increasing pointer_index along with process
+	while pointer_index < len(sequence2):
+
+		next_pointer_index = pointer_index
+
+		for index in range(pointer_index, len(sequence2)):		
+			item = sequence2[index]
+
+			if item not in map1:
+				
+				if len(tmp) > 0:
+					if len(result) < len(tmp):
+						result = tmp
+					tmp = []
+					tmp_prev_indexs = None
+				
+				continue
 			
+			# item existed in map1
 			if len(tmp) > 0:
-				if len(result) < len(tmp):
-					result = tmp
-				tmp = []
-				tmp_prev_indexs = None
-			
-			continue
-		
-		if len(tmp) > 0:
-			item_indexs = map1[item]
-			new_tmp_prev_indexs = set()
-			for item_index in item_indexs:
-				if tmp_prev_indexs and (item_index-1) in tmp_prev_indexs:
-					new_tmp_prev_indexs.add(item_index)
-			
-			if new_tmp_prev_indexs:
-				# looks good, continue adding previous subsequence
-				tmp.append(item)
-				tmp_prev_indexs = new_tmp_prev_indexs;
+				item_indexs = map1[item]
+				new_tmp_prev_indexs = set()
+				for item_index in item_indexs:
+					if tmp_prev_indexs and (item_index-1) in tmp_prev_indexs:
+						new_tmp_prev_indexs.add(item_index)
+				
+				if new_tmp_prev_indexs:
+					# looks good, continue adding previous subsequence
+					tmp.append(item)
+					tmp_prev_indexs = new_tmp_prev_indexs;
+				else:
+					# this item not ok, we will start a new round of pointer_index
+					if len(result) < len(tmp):
+						result = tmp
+					tmp = []
+					tmp_prev_indexs = None
+					break
+
 			else:
-				# this item not ok, the previous subsequence will break now to start a new one
+				tmp.append(item)
+				tmp_prev_indexs = map1[item]
+				next_pointer_index = index + 1
+
+			if (index+1) == len(sequence2):
 				if len(result) < len(tmp):
 					result = tmp
-				tmp = [item]
-				tmp_prev_indexs = map1[item]
 
+		if next_pointer_index > pointer_index:
+			pointer_index = next_pointer_index # then start new round with new pointer_index
 		else:
-			tmp.append(item)
-			tmp_prev_indexs = map1[item]
-
-		if (index+1) == len(sequence2):
-			if len(result) < len(tmp):
-				result = tmp
-
+			break
 
 	return result
 
@@ -79,5 +97,10 @@ class TestLCS(unittest.TestCase):
 		sequence2 = ['B', 'A', 'B', 'C', 'A']
 		result = lcs(sequence1, sequence2)
 		self.assertListEqual(result, ['B', 'A', 'B', 'C'])
+
+		sequence1 = ['a', 'a', 'a', 'a', 'b', 'b', 'b', 'b', 'c', 'd', 'd']
+		sequence2 = ['a', 'b', 'c', 'd', 'd']
+		result = lcs(sequence1, sequence2)
+		self.assertListEqual(result, ['b', 'c', 'd', 'd'])
 
 unittest.main()
