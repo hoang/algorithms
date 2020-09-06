@@ -1,0 +1,22 @@
+solution for this challenge step by step:
+
+- iterate through sequence1 and store its item in a HashMap<Set> with key is item and value is a Set of its index
+	- for example with sequence: [1, 3, 5, 7, 3] we store a HashMap like:
+		{
+			1: (0),
+			3: (1, 4),
+			5: (2),
+			7: (3)
+		}
+- iterate each item of sequence2 and process:
+	- with n is current item of sequence2:
+		- we check if n is present in HashMap of sequence1
+			- if not present, we move on
+			- else: we extract indexs of n on sequence1 from HashMap, for example Set indexs of n in sequence1 is: (3, 5, 7)
+				- we continue check for indexs of (n+1), for example is: (6, 8, 9)
+					- in this case, only n with index 5 or 7 is valid to be previous item of 6 or 8, so the pick for (n+1) is (6, 8)
+				- we continue check for indexs of (n+2) to see if anything is match with previous item index of 6 or 8. For example if indexs of (n+2) is (14, 16), it won't be any valid match for (n+1)
+					- so, the sequence start from n is break at (n+1). We found a child sequence is (n, n+1)
+				- start from (n+2): we start a new possible subsequence. So we repeat steps as it is with n.
+
+That's it!
