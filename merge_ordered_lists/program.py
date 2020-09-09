@@ -76,7 +76,7 @@ def normal_sort(list1, list2):
 
     return result
 
-class TestLCS(unittest.TestCase):
+class Test(unittest.TestCase):
     def test_merge2list(self):
         num = 3000
         for i in range(20):
