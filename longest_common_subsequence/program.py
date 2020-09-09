@@ -12,7 +12,16 @@ def lcs(sequence1, sequence2):
 	result = []
 	tmp = []
 	tmp_prev_indexs = None
-	pointer_index = 0	
+	pointer_index = 0
+
+	def set_result_if_need(reset_tmp = False):
+		nonlocal result, tmp, tmp_prev_indexs
+		if len(result) < len(tmp):
+			result = tmp
+		if reset_tmp:
+			tmp = []
+			tmp_prev_indexs = None
+
 
 	# iterate sequence2 by increasing pointer_index along with process
 	while pointer_index < len(sequence2):
@@ -23,13 +32,8 @@ def lcs(sequence1, sequence2):
 			item = sequence2[index]
 
 			if item not in map1:
-				
 				if len(tmp) > 0:
-					if len(result) < len(tmp):
-						result = tmp
-					tmp = []
-					tmp_prev_indexs = None
-				
+					set_result_if_need(True)	
 				continue
 			
 			# item existed in map1
@@ -46,10 +50,7 @@ def lcs(sequence1, sequence2):
 					tmp_prev_indexs = new_tmp_prev_indexs;
 				else:
 					# this item not ok, we will start a new round of pointer_index
-					if len(result) < len(tmp):
-						result = tmp
-					tmp = []
-					tmp_prev_indexs = None
+					set_result_if_need(True)
 					break
 
 			else:
@@ -58,8 +59,7 @@ def lcs(sequence1, sequence2):
 				next_pointer_index = index + 1
 
 			if (index+1) == len(sequence2):
-				if len(result) < len(tmp):
-					result = tmp
+				set_result_if_need()
 
 		if next_pointer_index > pointer_index:
 			pointer_index = next_pointer_index # then start new round with new pointer_index
