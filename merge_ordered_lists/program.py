@@ -3,6 +3,24 @@ import random
 import time
 
 def merge2list(list1, list2):
+    result = []
+
+    while len(list1) > 0 and len(list2) > 0:
+        if list1[0] < list2[0]:
+            n = list1.pop(0)
+        else:
+            n = list2.pop(0)
+        result.append(n)
+
+    if len(list1) > 0:
+        result.extend(list1)
+
+    if len(list2) > 0:
+        result.extend(list2)
+
+    return result
+
+def merge2list_hardway(list1, list2):
     result_left = []
     result_right = []
 
