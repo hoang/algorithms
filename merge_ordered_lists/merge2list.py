@@ -124,4 +124,5 @@ class Test(unittest.TestCase):
             print("normal sort complete at: " + str(end_time - start_time))
             self.assertListEqual(merged, expected)
 
-unittest.main()
+if __name__ == '__main__':
+    unittest.main()
